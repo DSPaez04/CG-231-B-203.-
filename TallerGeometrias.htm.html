@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Objetos Geometry en THREE.js</title>
+		<style>
+			body { margin: 0; }
+		</style>
+	</head>
+	<body>
+		<script type="module">
+			import * as THREE from 'https://unpkg.com/three/build/three.module.js';
+			//Creates scene and camera
+
+
+			var scene = new THREE.Scene();
+			var camera = new THREE.PerspectiveCamera( 75,
+ window.innerWidth / window.innerHeight, 0.1, 1000 );
+
+
+            //luz
+            
+            var ambiColor = "#0c0c0c";
+            var ambientLight = new THREE.AmbientLight(ambiColor);
+            scene.add(ambientLight);
+
+            //luz 2
+            var hemiLight = new THREE.HemisphereLight(0x0000ff, 0x00ff00, 1);
+            hemiLight.position.set(0, 500, 0);
+            scene.add(hemiLight);
+            /*var spotLight0 = new THREE.SpotLight(0xcccccc);
+            spotLight0.position.set(-40, 30, -10);
+            spotLight0.lookAt(plane);
+            scene.add(spotLight0);*/
+ 
+            //Creates renderer and adds it to the DOM
+
+
+			var renderer = new THREE.WebGLRenderer();
+			renderer.setSize( window.innerWidth, window.innerHeight );
+			document.body.appendChild( renderer.domElement );
+
+
+			//The Box!
+
+
+			//BoxGeometry (makes a geometry)
+			var geometry1 = new THREE.BoxGeometry( 8, 8, 8 );
+			//Material to apply to the cube (green)
+			var material1 = new THREE.MeshMatcapMaterial( { color: 0xff0000 } );
+			//Applies material to BoxGeometry
+			var cube = new THREE.Mesh( geometry1, material1 );
+			//Adds cube to the scene
+			scene.add( cube );
+
+            // Esfera
+            
+            const geometry2 = new THREE.SphereGeometry(6,32,32 );
+            const material2 = new THREE.MeshLambertMaterial( { color: 0xffffff  } );
+            const sphere = new THREE.Mesh( geometry2, material2 );
+            scene.add( sphere );
+
+            //cono
+            const geometry3 = new THREE.ConeGeometry( 4, 13, 10 );
+            const material3 = new THREE.MeshToonMaterial( {color: 0x0000ff} );
+            const cone = new THREE.Mesh( geometry3, material3 );
+            scene.add( cone );
+
+
+
+			//Sets camera's distance away from cube (using this explanation only
+//for simplicity's sake - in reality this actually sets the 'depth'
+//of the camera's position)
+
+
+			camera.position.z = 30;
+
+
+			//Rendering
+			var delta = 0.005;
+			
+			function renderiza() {
+			  requestAnimationFrame( renderiza );
+			  cube.rotation.z -= 2*delta;
+              cube.rotation.x -= 2*delta;
+			  cube.position.set(0,0,0);
+
+              sphere.rotation.x -= 2*delta;
+              sphere.rotation.z -= 2*delta;
+			  sphere.position.set(-20,0,0);
+
+              cone.rotation.x -= 2*delta;
+              cone.rotation.y -= 2*delta;
+			  cone.position.set(20,0,0);
+			  
+			  renderer.render( scene, camera );
+			}
+			renderiza();
+            
+
+		</script>
+	</body>
+</html>
